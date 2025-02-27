@@ -8,10 +8,10 @@ using ProductDemo.Domain.Entities;
 
 namespace ProductDemo.Domain.Repositories
 {
-    public interface IProductRepository
+    public interface IProductRepository : IRepository<Product>
     {
         Task<IEnumerable<ProductDto>> GetAllAsync();
-         Task AddAsync(ProductDto product);
+        Task AddAsync(ProductDto product);
         Task<Product?> GetByIdAsync(int id);
     }
 }

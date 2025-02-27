@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ProductDemo.Abstraction.Interfaces;
+using ProductDemo.Domain;
 using ProductDemo.Domain.Dto;
 using ProductDemo.Domain.Repositories;
 
@@ -11,21 +12,22 @@ namespace ProductDemo.Services.Services
 {
     public class ProductService: IProductService
     {
-        private readonly IProductRepository _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProductService(IProductRepository repository)
+        public ProductService(IUnitOfWork  unitOfWork)
         {
-            _repository = repository;
+          
+            _unitOfWork = unitOfWork;
         }
 
-        public Task<IEnumerable<ProductDto>> GetAllProductsAsync()
+        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync()
         {
-            return _repository.GetAllAsync();
+            return await _unitOfWork.productRepository.GetAllAsync();
         }
 
-        public Task AddProductAsync(ProductDto product)
+        public async Task AddProductAsync(ProductDto product)
         {
-            return _repository.AddAsync(product);
+              await _unitOfWork.productRepository.AddAsync(product);
         }
     }
 }

@@ -1,6 +1,10 @@
 ﻿
+using DistributedSystems.PurchaseOrder.DataSeeding;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
 using ProductDemo.API.Middleware;
+using ProductDemo.Domain.Entities;
+using ProductDemo.Infrastructure.Data.Db;
 using ProductDemo.Infrastructure.IOC;
 using ProductDemo.Services.IOC;
 using Serilog;
@@ -16,6 +20,8 @@ builder.Host.UseSerilog();
 builder.Services.AddControllers();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddApplicationServices(builder.Configuration);
+
+
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
@@ -38,7 +44,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
+await app.AutoMigrateDatabaseAsync();
 app.Run();
 
 

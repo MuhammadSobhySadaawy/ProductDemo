@@ -11,13 +11,11 @@ using ProductDemo.Infrastructure.Data.Db;
 
 namespace ProductDemo.Infrastructure.Data.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository : GenericRepository<Product>, IProductRepository
     {
-        private readonly AppDbContext _context;
-
-        public ProductRepository(AppDbContext context)
+        public ProductRepository(AppDbContext context): base(context)
         {
-            _context = context;
+           
         }
 
         public async Task<IEnumerable<ProductDto>> GetAllAsync()
@@ -30,7 +28,9 @@ namespace ProductDemo.Infrastructure.Data.Repositories
 
         public async Task<Product?> GetByIdAsync(int id)
         {
-            return await _context.Products.FindAsync(id);
+            
+           return    await _context.Products.FindAsync(id);
+
         }
 
         public async Task AddAsync(ProductDto product)
@@ -60,4 +60,7 @@ namespace ProductDemo.Infrastructure.Data.Repositories
 
        
     }
+
+
+
 }
