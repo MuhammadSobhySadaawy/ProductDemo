@@ -36,9 +36,6 @@ namespace ProductDemo.Infrastructure.Data.Repositories
             return await _context.Set<T>().Where(expression).ToListAsync();
         }
 
-        public virtual async Task SaveChange()
-        {
-           await _context.SaveChangesAsync();
-        }
+     
     }
 }

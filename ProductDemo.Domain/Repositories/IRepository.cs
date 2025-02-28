@@ -13,6 +13,5 @@ namespace ProductDemo.Domain.Repositories
         public Task<IEnumerable<T>> All();
         public Task<IEnumerable<T>> Find(Expression<Func<T, bool>> expression);
         public Task<T> Add(T entity);
-        public Task SaveChange();
     }
 }
