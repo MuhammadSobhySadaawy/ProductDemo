@@ -1,0 +1,35 @@
+services:
+  productdemo.api:
+    image: ${DOCKER_REGISTRY-}productdemoapi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    depends_on:
+      - sql-server
+    # environment:
+    #   - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - productnetwork
+   
+  sql-server:
+    container_name: sql-server
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=2122232425Mss@
+    hostname: sql-server
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlvolume:/var/opt/mssql
+    networks:
+      - productnetwork
+      
+networks:
+  productnetwork:
+
+volumes:
+  sqlvolume:

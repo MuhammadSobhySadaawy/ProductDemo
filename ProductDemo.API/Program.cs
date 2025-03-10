@@ -1,6 +1,7 @@
 ﻿
 using DistributedSystems.PurchaseOrder.DataSeeding;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using ProductDemo.API.Middleware;
 using ProductDemo.Domain.Entities;
@@ -11,6 +12,7 @@ using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
 builder.Configuration.AddEnvironmentVariables();
 Log.Logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
@@ -30,15 +32,20 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "ProductDemo.API", Version = "v1" });
 });
 var app = builder.Build();
+app.UseDeveloperExceptionPage();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    //app.MapOpenApi();
+//if (app.Environment.IsDevelopment())
+//{
+    app.MapOpenApi();
     app.UseSwagger();
     app.UseSwaggerUI();
+//}
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    dbContext.Database.Migrate();
 }
-
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
